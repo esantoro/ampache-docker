@@ -1,3 +1,44 @@
+# esantoro fork
+
+This fork of ampache-docker has been created to fix some things that in my opinion are anti-patterns.
+
+Things like:
+- running as root (WIP)
+- embedding a mysql database (DONE)
+- unclear way to customize settings (DONE)
+- configuration hard to inspect without exec-ing into the container
+
+## How to run this image
+
+- use docker-compose (see the included sample file)
+- either link the ampache container to a mariadb container or
+  link to some other mysql-compatible container running elsewhere
+- set configruatin in the environment section of docker-compose
+
+
+## Customizable settings:
+
+In ampache.cfg.php: 
+
+- web_path = "WEB_PATH"
+- local_web_path = "http://LOCAL_WEB_PATH"
+- database_hostname = DATABASE_HOSTNAME
+- database_port = DATABASE_PORT (default 3306)
+- database_name = DATABASE_NAME (default ampache)
+- database_username = DATABASE_USERNAME (default ampache)
+- database_password = DATABASE_PASSWORD
+- secret_key = "SECRET_KEY"
+
+How to use the ampache.cfg.php file? Map it to `/var/www/config/ampache.cfg.php` inside the ampache container.
+
+
+## example docker-compose file:
+
+```
+WIP
+```
+
+
 # ampache-docker
 
 Docker container for Ampache, a web based audio/video streaming application and file manager allowing you to access your music & videos from anywhere, using almost any internet enabled device.

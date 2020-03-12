@@ -1,30 +1,33 @@
 FROM ubuntu:18.04
-LABEL maintainer="lachlan-00"
+LABEL maintainer="esantoro"
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV MYSQL_PASS **Random**
 
-ADD create_mysql_admin_user.sh run.sh /
+#ENV WEB_PATH=""
+#ENV LOCAL_WEB_PATH=""
+#ENV DATABASE_HOSTNAME=""
+#ENV DATABASE_PORT=3306
+#ENV DATABASE_NAME=ampache
+#ENV DATABASE_USERNAME=ampache
+#ENV DATABASE_PASSWORD=ampache
+#ENV SECRET_KEY="you shoult really change this"
+
 ADD 001-ampache.conf /etc/apache2/sites-available/
-COPY ampache.cfg.* /var/temp/
+COPY ampache.cfg.php /var/www/config/ampache.cfg.php
 
-RUN     chmod 0755 /*.sh \
-    &&  chmod +x /*.sh \
-    &&  apt-get -q -q update \
+RUN     apt-get -q -q update \
     &&  apt-get -q -q -y install --no-install-recommends wget gnupg ca-certificates \
     &&  echo 'deb http://download.videolan.org/pub/debian/stable/ /' >> /etc/apt/sources.list.d/videolan.list \
     &&  wget -qO - https://download.videolan.org/pub/debian/videolan-apt.asc | apt-key add -
 RUN     apt-get -q -q update \
     &&  apt-get -q -q -y upgrade --no-install-recommends \
     &&  apt-get -q -q -y install --no-install-recommends \
-          inotify-tools mysql-server apache2 php php-json \
+          inotify-tools apache2 php php-json \
           php-curl php-mysql php-gd php-xml composer libev-libevent-dev \
           pwgen lame libvorbis-dev vorbis-tools flac \
           libmp3lame-dev libfaac-dev libtheora-dev libvpx-dev \
           libavcodec-extra ffmpeg git cron
-RUN     mkdir -p /var/run/mysqld \
-    &&  chown -R mysql /var/run/mysqld \
-    &&  rm -rf /var/lib/mysql/* /var/www/* /etc/apache2/sites-enabled/* \
+RUN     rm -rf /etc/apache2/sites-enabled/* \
     &&  wget -qO - https://github.com/ampache/ampache/archive/master.tar.gz \
           | tar -C /var/www -xzf - ampache-master --strip=1 \
     &&  mv /var/www/rest/.htac* /var/www/rest/.htaccess \
@@ -40,7 +43,11 @@ RUN     apt-get purge -q -q -y --autoremove git wget ca-certificates gnupg compo
     &&  find /var/www -type d -name '.git' -print0 | xargs -0 -L1 -- rm -rf \
     &&  echo '30 7 * * *   /usr/bin/php /var/www/bin/catalog_update.inc' | crontab -u www-data -
 
-VOLUME ["/etc/mysql", "/var/lib/mysql", "/media", "/var/www/config", "/var/www/themes"]
+ADD run.sh /run.sh
+RUN     chmod 0755 /run.sh \
+    &&  chmod +x /run.sh
+
+VOLUME ["/media", "/var/www/config", "/var/www/themes"]
 EXPOSE 80
 
 CMD ["/run.sh"]

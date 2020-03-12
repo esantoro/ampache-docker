@@ -1,0 +1,32 @@
+version: '3'
+services:
+  ampache:
+    image: esantoro/ampache:4.1.1
+    restart: always
+    links:
+      - mariadb:mariadb
+    ports:
+      - 9080:80
+    volumes:
+      - ./ampache-data:/media
+    environment:
+      WEB_PATH: "/"
+      LOCAL_WEB_PATH: "localhost:9080"
+      DATABASE_HOSTNAME: "mariadb"
+      DATABASE_PORT: 3306
+      DATABASE_NAME: "ampache"
+      DATABASE_USERNAME: "ampache"
+      DATABASE_PASSWORD: "ampache"
+      SECRET_KEY: "JLIb1Pgzzozk5n8lQ2FfIJ1rn4TSPKHHgI"
+    depends_on:
+    - "mariadb"
+  mariadb:
+    image: mariadb/server:10.4
+    environment:
+      MARIADB_ROOT_PASSWORD: rootpassword
+      MARIADB_ROOT_HOST: '%'
+      MARIADB_DATABASE: ampache
+      MARIADB_USER: ampache
+      MARIADB_PASSWORD: ampache
+    volumes:
+      - ./ampache-mariadb:/var/lib/mysql

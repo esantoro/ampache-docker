@@ -25,20 +25,6 @@ config_version = 40
 ; DEFAULT: ""
 ;http_host = "localhost"
 
-; The public http port of your server.
-; If not set, retrieved automatically from client request.
-; DEFAULT:
-;http_port = 80
-
-; The public path to your Ampache install
-; Do not put a trailing / on this path
-; For example if your site is located at http://localhost
-; than you do not need to enter anything for the web_path
-; if it is located at http://localhost/music you need to
-; set web_path to /music
-; DEFAULT: ""
-;web_path = ""
-
 ; The local http url of your server.
 ; This is used to access the server from within the
 ; same host where ampache is running.
@@ -48,7 +34,24 @@ config_version = 40
 ; to a localhost URL.
 ; If not set, retrieved automatically from server information.
 ; DEFAULT: ""
-;local_web_path = "http://localhost/ampache"
+;# CUSTOMIZE THIS!
+local_web_path = "http://LOCAL_WEB_PATH"
+
+
+; The public http port of your server.
+; If not set, retrieved automatically from client request.
+; DEFAULT:
+http_port = 80
+
+; The public path to your Ampache install
+; Do not put a trailing / on this path
+; For example if your site is located at http://localhost
+; than you do not need to enter anything for the web_path
+; if it is located at http://localhost/music you need to
+; set web_path to /music
+; DEFAULT: ""
+web_path = "WEB_PATH"
+
 
 
 ;#########################################################
@@ -58,25 +61,25 @@ config_version = 40
 ; Hostname of your database
 ; For socket authentication, set the path to socket file (e.g. /var/run/mysqld/mysqld.sock)
 ; DEFAULT: localhost
-database_hostname = localhost
+database_hostname = DATABASE_HOSTNAME
 
 ; Port to use when connecting to your database
 ; DEFAULT: none
-;database_port = 3306
+database_port = DATABASE_PORT
 
 ; Name of your Ampache database
 ; DEFAULT: ampache
-database_name = ampache
+database_name = DATABASE_NAME
 
 ; Username for your Ampache database
 ; DEFAULT: ""
-database_username = username
+database_username = DATABASE_USERNAME
 
 ; Password for your Ampache database, this can not be blank
 ; this is a 'forced' security precaution, the default value
 ; will not work (except if using socket authentication)
 ; DEFAULT: ""
-database_password = password
+database_password = DATABASE_PASSWORD
 
 
 ;#########################################################
@@ -85,7 +88,7 @@ database_password = password
 
 ; Cryptographic secret
 ; This MUST BE changed with your own secret key. Ampache-specific, just pick any random string you want.
-secret_key = "abcdefghijklmnoprqstuvwyz0123456"
+secret_key = "SECRET_KEY"
 
 ; Length that a session will last expressed in seconds. Default is
 ; one hour.
@@ -469,7 +472,7 @@ sociable = "true"
 ; Album Art Store on Disk
 ; This defines if arts should be stored on disk instead of database.
 ; DEFAULT: false
-;album_art_store_disk = "false"
+album_art_store_disk = "true"
 
 ; Local Metadata Directory
 ; This define a local metadata directory with write access where to store
@@ -608,7 +611,7 @@ live_stream = "true"
 ; Set this to true to enable podcasts and the
 ; possibility for admins to subscribe to new podcasts.
 ; DEFAULT: false
-;podcast = "false"
+podcast = "true"
 
 ; Web Socket address
 ; Declare the web socket server address
